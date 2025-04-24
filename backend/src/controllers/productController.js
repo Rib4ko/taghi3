@@ -58,6 +58,17 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Search products
+const searchProducts = async (req, res) => {
+  try {
+    const query = req.query.q;
+    const products = await productModel.searchProducts(query);
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to search products', details: error.message });
+  }
+};
 // Delete product
 const deleteProduct = async (req, res) => {
   try {
@@ -77,4 +88,5 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };

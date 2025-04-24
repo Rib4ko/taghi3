@@ -1,5 +1,15 @@
 const pool = require('./db');
 
+const createUsersTable = async () => {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL)`;
+  await pool.query(sql);
+};
+
 const createUser = async (user) => {
   const sql = 'INSERT INTO users SET ?';
   const [result] = await pool.query(sql, user);
@@ -35,6 +45,8 @@ const deleteUser = async (id) => {
   const [result] = await pool.query(sql, [id]);
   return result;
 };
+
+createUsersTable();
 
 module.exports = {
   createUser,

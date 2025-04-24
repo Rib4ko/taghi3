@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "../../frontend/src/components/Header";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -16,46 +17,55 @@ const languages = [
 ];
 
 export function Navbar() {
-  const [language, setLanguage] = useState(languages[0].code);
-  const router = useRouter();
+    const [language, setLanguage] = useState(languages[0].code);
+    const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
 
-  const handleLanguageChange = (code: string) => {
-    setLanguage(code);
-  };
+    const handleLanguageChange = (code: string) => {
+        setLanguage(code);
+    };
 
-  return (
-    <nav className="bg-secondary p-4 flex items-center justify-between">
-      <div className="flex items-center">
-        <img src="/logo.png" alt="JiexTrading Logo" className="h-8 mr-4" />
-        <span className="font-bold text-lg">JiexTrading</span>
-      </div>
-      <div className="flex items-center space-x-4">
-        <a href="/" className="hover:text-primary">
-          Accueil
-        </a>
-        <a href="/products" className="hover:text-primary">
-          Produits
-        </a>
-        <a href="/categories" className="hover:text-primary">
-          Catégories
-        </a>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">{language}</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            {languages.map((lang) => (
-              <DropdownMenuItem
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
-              >
-                {lang.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <Button onClick={() => router.push('/login')}>Connexion / Inscription</Button>
-      </div>
-    </nav>
-  );
+    return (
+      <nav className="bg-secondary p-4 flex flex-col items-center">
+        <div className="flex flex-col w-full">
+          <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <img src="/logo.png" alt="JiexTrading Logo" className="h-8 mr-4" />
+              <span className="font-bold text-lg">JiexTrading</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <a href="/" className="hover:text-primary">
+                Accueil
+              </a>
+              <a href="/products" className="hover:text-primary">
+                Produits
+              </a>
+              <a href="/categories" className="hover:text-primary">
+                Catégories
+              </a>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">{language}</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                  {languages.map((lang) => (
+                    <DropdownMenuItem
+                      key={lang.code}
+                      onClick={() => handleLanguageChange(lang.code)}
+                    >
+                      {lang.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button onClick={() => router.push("/login")}>
+                Connexion / Inscription
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
 }
+

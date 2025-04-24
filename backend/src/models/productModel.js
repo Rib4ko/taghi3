@@ -1,5 +1,17 @@
 const pool = require('./db');
 
+const createProductsTable = async () => {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        price DECIMAL(10, 2) NOT NULL,
+        category VARCHAR(255),
+        quantity INT)`;
+  await pool.query(sql);
+};
+
 const createProduct = async (product) => {
   const sql = 'INSERT INTO products SET ?';
   const [result] = await pool.query(sql, product);
@@ -24,11 +36,22 @@ const updateProduct = async (id, product) => {
   return result;
 };
 
+const searchProducts = async (query) => {
+  const sql = `SELECT * FROM products WHERE name LIKE ? OR description LIKE ?`;
+  const likeQuery = `%${query}%`;
+  const [rows] = await pool.query(sql, [likeQuery, likeQuery]);
+  return rows;
+};
+
+
 const deleteProduct = async (id) => {
   const sql = 'DELETE FROM products WHERE id = ?';
   const [result] = await pool.query(sql, [id]);
   return result;
 };
+
+
+createProductsTable();
 
 module.exports = {
   createProduct,
@@ -36,4 +59,5 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };

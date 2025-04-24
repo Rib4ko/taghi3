@@ -1,4 +1,6 @@
 const orderModel = require('../models/orderModel');
+const userModel = require('../models/userModel');
+const productModel = require('../models/productModel');
 
 // Create order
 const createOrder = async (req, res) => {
@@ -31,7 +33,18 @@ const getOrders = async (req, res) => {
 const getOrderById = async (req, res) => {
   try {
     const id = req.params.id;
-    const order = await orderModel.getOrderById(id);
+    let order = await orderModel.getOrderById(id);
+    const customer = await userModel.getUserById(order.customerId);
+    const products = await Promise.all(
+      order.productIds.map(async (productId) => {
+        const product = await productModel.getProductById(productId);
+        return product.name;
+      })
+    );
+    const quantities = order.quantities;
+    order.customerName = customer.name;
+    order.products = products;
+    order.quantities = quantities;
     if (!order) {
         return res.status(404).json({ error: 'Order not found' });
     }
