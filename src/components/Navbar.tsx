@@ -6,7 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/ui/dropdown-menu";
 import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -89,4 +89,3 @@ export function Navbar() {
       </nav>
     );
 }
-
