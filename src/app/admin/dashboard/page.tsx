@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Area,
@@ -17,7 +17,7 @@ import {
   YAxis,
 } from "recharts";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
