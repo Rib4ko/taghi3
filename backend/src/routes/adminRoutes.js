@@ -15,5 +15,7 @@ router.get('/statistics/:id', adminController.getStatisticById);
 router.put('/statistics/:id', adminController.updateStatistic);
 router.delete('/statistics/:id', adminController.deleteStatistic);
 
+router.get('/dashboard-statistics', adminController.getDashboardStatistics);
+
 
 module.exports = router;

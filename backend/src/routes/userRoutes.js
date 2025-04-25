@@ -1,18 +1,24 @@
 const express = require('express');
 const router = express.Router();
-
-// Import controller
 const userController = require('../controllers/userController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// User Routes
-router.post('/register', userController.registerUser);
-router.post('/login', userController.loginUser);
+// Create a new user
+router.post('/', userController.createUser);
 
-router.get('/', userController.getUsers); // Example: get all users
-router.get('/:id', userController.getUserById); // Example: get user by id
-router.put('/:id', userController.updateUser); // Example: update user
-router.delete('/:id', userController.deleteUser); // Example: delete user
+// Get all users
+router.get('/', authMiddleware, userController.getAllUsers);
 
+// Get a user by ID
+router.get('/:id', authMiddleware, userController.getUserById);
 
+// Update a user
+router.put('/:id', authMiddleware, userController.updateUser);
 
+// Delete a user
+router.delete('/:id', authMiddleware, userController.deleteUser);
+
+// Login and logout route
+router.post('/login', userController.login);
+router.post('/logout', userController.logout);
 module.exports = router;

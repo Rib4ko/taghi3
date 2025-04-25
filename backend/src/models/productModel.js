@@ -6,15 +6,20 @@ const createProductsTable = async () => {
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         description TEXT,
-        price DECIMAL(10, 2) NOT NULL,
+        price DECIMAL(10, 2) NOT NULL, 
         category VARCHAR(255),
         quantity INT)`;
   await pool.query(sql);
 };
 
-const createProduct = async (product) => {
-  const sql = 'INSERT INTO products SET ?';
-  const [result] = await pool.query(sql, product);
+const createProduct = async (product, categoryId) => {
+    const newProduct = {
+        ...product,
+        categoryId: categoryId
+    };
+    const sql = 'INSERT INTO products SET ?';
+
+  const [result] = await pool.query(sql, newProduct);
   return result;
 };
 
@@ -50,7 +55,7 @@ const deleteProduct = async (id) => {
   return result;
 };
 
-
+ 
 createProductsTable();
 
 module.exports = {

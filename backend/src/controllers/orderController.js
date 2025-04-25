@@ -1,96 +1,63 @@
-const orderModel = require('../models/orderModel');
-const userModel = require('../models/userModel');
-const productModel = require('../models/productModel');
+const Order = require('../models/orderModel');
 
 // Create order
-const createOrder = async (req, res) => {
-  try {
-    const order = req.body;
-    const result = await orderModel.createOrder(order);
-    res.status(201).json({ ...result, order });
-  } catch (error) {
-    console.error(error);
-    if (error.code === 'ER_DUP_ENTRY') {
-        res.status(409).json({ error: 'Order already exists' });
-    } else {
-        res.status(500).json({ error: 'Internal Server Error' });
+exports.createOrder = async (req, res) => {
+    try {
+        const order = new Order(req.body);
+        await order.save();
+        res.status(201).json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-  }
 };
 
 // Get all orders
-const getOrders = async (req, res) => {
-  try {
-    const orders = await orderModel.getOrders();
-    res.status(200).json(orders);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+exports.getAllOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 // Get order by Id
-const getOrderById = async (req, res) => {
-  try {
-    const id = req.params.id;
-    let order = await orderModel.getOrderById(id);
-    const customer = await userModel.getUserById(order.customerId);
-    const products = await Promise.all(
-      order.productIds.map(async (productId) => {
-        const product = await productModel.getProductById(productId);
-        return product.name;
-      })
-    );
-    const quantities = order.quantities;
-    order.customerName = customer.name;
-    order.products = products;
-    order.quantities = quantities;
-    if (!order) {
-        return res.status(404).json({ error: 'Order not found' });
+exports.getOrderById = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    res.status(200).json(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error when getting the order' });
-  }
 };
 
 // Update order
-const updateOrder = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const order = req.body;
-
-    const result = await orderModel.updateOrder(id, order);
-    if(result.affectedRows === 0){
-        return res.status(404).json({ error: 'Order not found' });
+exports.updateOrder = async (req, res) => {
+    try {
+        const order = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    res.status(200).json({ ...result, order });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error when updating the order' });
-  }
 };
 
 // Delete order
-const deleteOrder = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const result = await orderModel.deleteOrder(id);
-    if(result.affectedRows === 0){
-        return res.status(404).json({ error: 'Order not found' });
+exports.deleteOrder = async (req, res) => {
+    try {
+        const order = await Order.findByIdAndDelete(req.params.id);
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+        res.json({ message: 'Order deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    res.status(200).json({ message: 'Order deleted', ...result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error when deleting the order' });
-  }
 };
 
-module.exports = {
-  createOrder,
-  getOrders,
-  getOrderById,
-  updateOrder,
-  deleteOrder,
-};
+

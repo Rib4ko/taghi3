@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "../../frontend/src/components/Header";
 import { useState } from "react";
 import {
   DropdownMenu,
@@ -8,13 +7,32 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
 
 const languages = [
   { code: "fr", label: "Français" },
   { code: "en", label: "English" },
 ];
+
+interface HeaderProps {
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+}
+
+function Header({ searchQuery, setSearchQuery }: HeaderProps) {
+  return (
+    <div className="flex items-center justify-between w-full">
+      <input
+        type="text"
+        placeholder="Search..."
+        className="w-full px-4 py-2 border rounded-md"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+    </div>
+  );
+}
 
 export function Navbar() {
     const [language, setLanguage] = useState(languages[0].code);
@@ -61,6 +79,9 @@ export function Navbar() {
               </DropdownMenu>
               <Button onClick={() => router.push("/login")}>
                 Connexion / Inscription
+              </Button>
+              <Button onClick={() => router.push("/admin/dashboard")}>
+                Admin Panel
               </Button>
             </div>
           </div>

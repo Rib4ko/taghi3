@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/ui/button";
+import { AspectRatio } from "@/ui/aspect-ratio";
 
 export default function Home() {
   return (
@@ -24,9 +24,9 @@ export default function Home() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold mb-4">Catégories populaires</h2>
           <div className="flex flex-wrap justify-center gap-4">
-            <CategoryCard title="Huiles moteur" imageUrl="/images/engine-oil.jpg" />
-            <CategoryCard title="Filtres" imageUrl="/images/oil-filter.jpg" />
-            <CategoryCard title="Batteries" imageUrl="/images/battery.jpg" />
+            <CategoryCard title="Huiles moteur" imageUrl="https://picsum.photos/300/200" />
+            <CategoryCard title="Filtres" imageUrl="https://picsum.photos/300/200" />
+            <CategoryCard title="Batteries" imageUrl="https://picsum.photos/300/200" />
           </div>
         </section>
       </main>

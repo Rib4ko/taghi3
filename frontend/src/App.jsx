@@ -1,40 +1,42 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Import Navigate
+import AdminDashboard from './pages/AdminDashboard';
 import Home from './pages/Home';
+import Products from './pages/Products';
+import About from './pages/About';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import SellerDashboard from './pages/SellerDashboard';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminUsers from './pages/Admin/Users';
-import AdminProducts from './pages/Admin/Products';
-import AdminCategories from './pages/Admin/Categories';
-import AdminOrders from './pages/Admin/Orders';
-import SellerProducts from './pages/Seller/Products';
-import ProductPage from './pages/ProductPage';
-import ProductDetailsPage from './pages/ProductDetailsPage';
+import CreateSeller from './pages/CreateSeller';
+import EditProduct from './pages/EditProduct';
+import CreateProduct from './pages/CreateProduct';
+import Header from './layouts/Header';
+import Footer from './layouts/Footer';
 
 function App() {
   return (
     <Router>
       <Header />
-
-
       <Routes>
-        <Route path="/seller" element={<SellerDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
-        <Route path="/admin/categories" element={<AdminCategories />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
-        <Route path="/seller/products" element={<SellerProducts />} />
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/products" element={<ProductPage/>}/>
-        <Route path="/product/:id" element={<ProductDetailsPage/>}/>
+        <Route path="/admin" element={localStorage.getItem('token') ? <AdminDashboard /> : <Navigate to="/login" />} />
+        <Route
+          path="/create-seller"
+          element={localStorage.getItem('token') ? <CreateSeller /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/seller"
+          element={localStorage.getItem('token') ? <SellerDashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/create-product"
+          element={localStorage.getItem('token') ? <CreateProduct /> : <Navigate to="/login" />}
+        />
+        <Route path="/edit-product" element={localStorage.getItem('token') ? <EditProduct /> : <Navigate to="/login" />} />
+
       </Routes>
       <Footer />
     </Router>
@@ -42,3 +44,5 @@ function App() {
 }
 
 export default App;
+
+

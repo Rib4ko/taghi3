@@ -1,10 +1,16 @@
+jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../components/Button';
 
-function Home() {
+
+const Home = () => {
   return (
-    <div>
-      <h1>Welcome to JiexTrading!</h1>
-      <p>This is the home page.</p>
+    <div className="container mx-auto px-4 py-12 text-center">
+      <h1 className="text-4xl font-bold mb-6">Welcome to our E-commerce store!</h1>
+      <Link to="/products">
+        <Button>View Products</Button>
+      </Link>
     </div>
   );
 }

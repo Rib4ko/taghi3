@@ -21,6 +21,15 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/api/admin/:path*',
+        destination: '/backend/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
